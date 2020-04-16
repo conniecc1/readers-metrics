@@ -8,19 +8,19 @@ This repo contains all the code needed to calculate the monthly Wikimedia moveme
   + pageviews: [pageview hourly](https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake/Traffic/Pageview_hourly), 
   + unique devices:  [unique_devices_per_project_family_monthly](https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake/Traffic/Unique_Devices)
 
-## File Overview
-- Files in the `queries` directory includes the queries used for fetching the data.
-- Files in the `figures` directory includes the graphs produced during the analysis
-- `01_interactions_metrics.ipynb` contains the analysis for calculating monthly interactions (pageviews and seen previews).
-- `02-unique_devices.ipynb` contains the analysis for calculating the total unique devices each month.
-- `03_diversity_metrics.ipynb` contains the analysis for calculating interactions for identified global south wikis and mobile-heavy wikis. 
 
-## Usage
-1. Clone this onto one of the [SWAP](https://wikitech.wikimedia.org/wiki/SWAP) hosts. 
-2. Run the notebook `01_interactions_metrics.ipynb` to caluclate overall monthly interactios (pageviews and seen previews)
-3. Run the notebook ``02-unique_devices.ipynb` to calculate total unqiue devices each month.
-4. Run the notebook `03_diversity_metrics.ipynb` to calculate interactions for identified global south wikis and mobile-heavy wikis. 
-5. Do any other analysis needed to understand major trends. 
+# Usage
+1. Clone this onto one of the [SWAP](https://wikitech.wikimedia.org/wiki/SWAP) hosts.
+1. In any order, run the two notebooks numbered 01
+    * [01a-update_pageviews_table.ipynb](01a-update_pageviews_table.ipynb): creates or updates an intermediate pageview table in the cchen Hive database.
+    * [01b-update_diversity_table.ipynb](01b-update_diversity_table.ipynb): creates or updates an intermediate pageview table  for global south and global north in the cchen Hive database.
+1. In any order, run the two notebooks numbered 02
+    * Run the notebook [02a-calculation.ipynb](02a-calculation.ipynb), which actually calculates the metrics (some of them using the pageview, preview and unique devices tables) and inserts them into metrics.tsv.
+    * Run the notebook [02b-diversity-calculation.ipynb](02b-diversity-calculation.ipynb), which actually calculates the diversity metrics (using the pageview tables calculated in the previous step and preview table) and inserts them into diversity_metrics.tsv.
+1. Run the notebook [03-report.ipynb](03-report.ipynb), which does a few simple transformations on the metrics and produces the table of values needed for the final report, as well as a graph of each metric.
+1. Run the notebook [04-Visualiaztion.ipynb](03-Visualzation.ipynb), which provides YoY charts for metrics in the metrics deck.
+1. Do any analysis you need to understand major trends (drawing on the analysis notes in past months' slides if needed). The [analysis folder](analysis) has a variety of notebook you could reuse; if you do new analysis, considering keeping it in an existing or new notebook in this folder, so it can be reused in the future.
+
 
 ## Data Definitions
 
